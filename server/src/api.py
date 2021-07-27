@@ -41,3 +41,8 @@ def drop_db():
         db.drop_all()
     except Exception as e:
         raise e
+
+# Registering enpoints
+from src.endpoints.auth import auth_bp
+
+app.register_blueprint(auth_bp)
