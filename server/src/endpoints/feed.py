@@ -50,7 +50,8 @@ class FeedAPI(MethodView):
             _filter["food_id"] = food_id
     
         feedings = Feeding.get_feedings(**_filter)
-        return make_response(jsonify([f.to_dict() for f in feedings]))
+        
+        return make_response(jsonify([{'feeding': x.to_dict(), 'user': x.user.to_dict(), 'location': x.location.to_dict(), 'food': x.food.to_dict()} for x in feedings]))
 
     def put(self):
         pass

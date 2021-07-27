@@ -1,1 +1,74 @@
-<p>feed works!</p>
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Feed</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form class="example-form">
+            <table class="example-full-width" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field appearance="fill">
+                        <mat-label>Food Type</mat-label>
+                        <mat-select [(ngModel)]="food_type_id" name="food_type_id">
+                          <mat-option *ngFor="let foodtype of foodtypes" [value]="foodtype.id" >
+                            {{foodtype.typename}}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field appearance="fill">
+                        <mat-label>Food</mat-label>
+                        <mat-select [(ngModel)]="food_id" name="food_id">
+                          <mat-option *ngFor="let food of foods" [value]="food.id" >
+                            {{food.foodname}}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field appearance="fill">
+                        <mat-label>Location</mat-label>
+                        <mat-select [(ngModel)]="location_id" name="location_id">
+                          <mat-option *ngFor="let location of locations" [value]="location.id" >
+                            {{location.city_country}}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Choose a date</mat-label>
+                                <input matInput type="datetime-local" placeholder="start date">
+                          </mat-form-field>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Total ducks" [(ngModel)]="total_ducks" name="total_ducks" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Total amount" [(ngModel)]="total_amount" name="total_amount" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="feed()" color="primary">Feed</button>
+    </mat-card-actions>
+</mat-card>

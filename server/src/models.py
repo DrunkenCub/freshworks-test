@@ -106,6 +106,7 @@ class Feeding(OutputMixin, db.Model):
 
     @staticmethod
     def get_feedings(**kwargs):
+        return Feeding.query.join(User, Feeding.user_id== User.id).join(Food, Feeding.food_id == Food.food_type_id).all()
         if kwargs is None:
             return Feeding.query.all()
         return Feeding.query.filter_by(**kwargs).all()

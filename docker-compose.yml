@@ -23,9 +23,9 @@ services:
       - 5000:5000
     depends_on:
       - db
-  web:
-    build: 
-      context: ./app
-    ports:
-        - "4200:80"
+#  web:
+#    build: 
+#      context: ./app
+#    ports:
+#        - "4200:80"
 
