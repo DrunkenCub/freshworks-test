@@ -14,6 +14,8 @@ class FeedAPI(MethodView):
     def post(self):
         pass
 
+    @login_required
+    @admin_required
     def get(self, user_id=None):
         pass
 
