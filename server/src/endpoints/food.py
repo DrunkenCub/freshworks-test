@@ -10,24 +10,40 @@ food_bp = Blueprint('food', __name__, url_prefix='/food')
 
 
 class FoodAPI(MethodView):
+    @admin_required
     @login_required
     def post(self):
         pass
 
+    # @login_required
     def get(self):
-        pass
+        food_type_id = request.args.get("food_type_id", None)
+
+        _filter = {}
+        if food_type_id:
+            _filter["food_type_id"] = food_type_id
+
+        foods = Food.get_foods(**_filter)
+
+        return make_response(jsonify([f.to_dict() for f in foods]))
+
 
     def put(self):
         pass
 
 
 class FoodTypeAPI(MethodView):
+    @admin_required
     @login_required
     def post(self):
         pass
 
+    # @login_required
     def get(self):
-        pass
+        _filter = {}
+        food_types = Food.get_foods(**_filter)
+
+        return make_response(jsonify([f.to_dict() for f in food_types]))
 
     def put(self):
         pass

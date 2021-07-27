@@ -86,6 +86,29 @@ class Feeding(OutputMixin, db.Model):
         nullable=False)
     schedule = db.relationship("ScheduleFeed", uselist=False, backref="feeding")
 
+    @staticmethod
+    def feed_ducks(location, total_ducks, total_amount, food_id, user_id, fed_date=None):
+        try:
+            _feeding = Feeding(
+                location=location,
+                total_ducks=total_ducks,
+                total_amount=total_amount,
+                user_id=user_id,
+                fed_date=fed_date,
+                food_id=food.id
+            )
+            db.session.add(_feeding)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise
+
+    @staticmethod
+    def get_feedings(**kwargs):
+        if kwargs is None:
+            return Feeding.query.all()
+        return Feeding.query.filter_by(**kwargs).all()
+
 
 # since the time restriction, i will only use city, country as one.
 class Location(OutputMixin, db.Model):
@@ -103,13 +126,17 @@ class FoodType(OutputMixin, db.Model):
 
     __tablename__ = "food_type"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    foodname = db.Column(db.String(128), unique=True)
-    foodtype = db.Column(db.String(128), unique=True)
+    typename = db.Column(db.String(128), unique=True)
     desc = db.Column(db.String(512), nullable=True)
     foods = db.relationship('Food', backref='food_type', lazy=True)
 
     def get_food_by_type(self):
         return self.foods
+
+    def get_food_types(**kwargs):
+        if kwargs is None:
+            return FoodType.query.all()
+        return FoodType.query.filter_by(**kwargs).all()
 
 
 class Food(OutputMixin, db.Model):
@@ -117,14 +144,18 @@ class Food(OutputMixin, db.Model):
     __tablename__ = "food"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     foodname = db.Column(db.String(128), unique=True)
-    foodtype = db.Column(db.String(128), unique=True)
     desc = db.Column(db.String(512), nullable=True)
-    food_type_id = db.Column(db.Integer, db.ForeignKey('food.id'),
+    food_type_id = db.Column(db.Integer, db.ForeignKey('food_type.id'),
         nullable=False)
     feedings = db.relationship('Feeding', backref='food', lazy=True)
 
     def get_feeding_by_food(self):
         return self.feedings
+
+    def get_foods(**kwargs):
+        if kwargs is None:
+            return Food.query.all()
+        return Food.query.filter_by(**kwargs).all()
 
 
 class ScheduleFeed(OutputMixin, db.Model):
