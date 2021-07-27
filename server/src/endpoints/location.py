@@ -6,12 +6,12 @@ from src.api import db
 from src.helpers.auth_helper import login_required, admin_required
 
 
-food_bp = Blueprint('food', __name__, url_prefix='/food')
+location_bp = Blueprint('location', __name__, url_prefix='/location')
 
 
 class LocationAPI(MethodView):
-    @admin_required
-    @login_required
+    # @admin_required
+    # @login_required
     def post(self):
         post_data = request.get_json()
         foodname = post_data.get('city_country')
@@ -36,41 +36,7 @@ class LocationAPI(MethodView):
         pass
 
 
-class FoodTypeAPI(MethodView):
-    @admin_required
-    @login_required
-    def post(self):
-        post_data = request.get_json()
-        typename = post_data.get('typename')
-        desc = post_data.get('desc', None)
+location_view = LocationAPI.as_view('location_api')
 
-        foodtype = FoodType.add_food_type(
-            typename=typename,
-            desc=desc
-        )
-        responseObject = {
-            'message': 'foodtype added',
-            'foodtype': foodtype.to_dict()
-        }
-        return make_response(jsonify(responseObject)), 200
-
-    @login_required
-    def get(self):
-        _filter = {}
-        food_types = FoodType.get_food_types(**_filter)
-
-        return make_response(jsonify([f.to_dict() for f in food_types]))
-
-    def put(self):
-        pass
-
-
-food_view = FoodAPI.as_view('food_api')
-food_type_view = FoodTypeAPI.as_view('food_type_api')
-
-
-food_bp.add_url_rule('/foodtypes', view_func=food_type_view, methods=['GET'])
-food_bp.add_url_rule('/foods', view_func=food_view, methods=['GET'])
-
-food_bp.add_url_rule('/foodtypes', view_func=food_type_view, methods=['POST'])
-food_bp.add_url_rule('/foods', view_func=food_view, methods=['POST'])
+location_bp.add_url_rule('/location', view_func=location_view, methods=['POST'])
+food_bp.add_url_rule('/location', view_func=location_view, methods=['GET'])
