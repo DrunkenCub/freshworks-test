@@ -10,8 +10,8 @@ location_bp = Blueprint('location', __name__, url_prefix='/location')
 
 
 class LocationAPI(MethodView):
-    # @admin_required
-    # @login_required
+    @admin_required
+    @login_required
     def post(self):
         post_data = request.get_json()
         city_country = post_data.get('city_country')
