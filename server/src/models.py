@@ -23,6 +23,7 @@ class User(OutputMixin, db.Model):
     password = db.Column(db.String(256))
     fullname = db.Column(db.String(256), nullable=True)
     admin = db.Column(db.Boolean, unique=False, default=False)
+    feedings = db.relationship('Feeding', backref='user', lazy=True)
 
     @validates('email')
     def validate_email(self, key, email):
@@ -65,3 +66,71 @@ class User(OutputMixin, db.Model):
             raise Exception('Invalid token. Please log in again.')
         except Exception as e:
             raise e
+
+    def get_feeding_by_user(self):
+        return self.feedings
+
+class Feeding(OutputMixin, db.Model):
+
+    __tablename__ = "feeding"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fed_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    location_id = db.Column(db.Integer, db.ForeignKey('location.id'),
+        nullable=False)
+    total_ducks = db.Column(db.Integer, default=1)
+    total_amount = db.Column(db.Integer, default=1)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+        nullable=False)
+    food_id = db.Column(db.Integer, db.ForeignKey('food.id'),
+        nullable=False)
+    schedule = db.relationship("ScheduleFeed", uselist=False, backref="feeding")
+
+
+# since the time restriction, i will only use city, country as one.
+class Location(OutputMixin, db.Model):
+    __tablename__ = "location"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    city_country = db.Column(db.String(256), nullable=True)
+    feedings = db.relationship('Feeding', backref='location', lazy=True)
+
+    def get_food_by_type(self):
+        return self.feedings
+
+
+class FoodType(OutputMixin, db.Model):
+
+    __tablename__ = "food_type"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    foodname = db.Column(db.String(128), unique=True)
+    foodtype = db.Column(db.String(128), unique=True)
+    desc = db.Column(db.String(512), nullable=True)
+    foods = db.relationship('Food', backref='food_type', lazy=True)
+
+    def get_food_by_type(self):
+        return self.foods
+
+
+class Food(OutputMixin, db.Model):
+
+    __tablename__ = "food"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    foodname = db.Column(db.String(128), unique=True)
+    foodtype = db.Column(db.String(128), unique=True)
+    desc = db.Column(db.String(512), nullable=True)
+    food_type_id = db.Column(db.Integer, db.ForeignKey('food.id'),
+        nullable=False)
+    feedings = db.relationship('Feeding', backref='food', lazy=True)
+
+    def get_feeding_by_food(self):
+        return self.feedings
+
+
+class ScheduleFeed(OutputMixin, db.Model):
+
+    __tablename__ = "schedule_feed"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    feeding_id = db.Column(db.Integer, db.ForeignKey('feeding.id'))
+    # Schdule in hourly setting
+    schedule = db.Column(db.Integer, default=24)
