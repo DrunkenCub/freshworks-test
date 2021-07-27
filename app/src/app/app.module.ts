@@ -50,12 +50,20 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { FeedComponent } from './feed/feed.component';
+import { ReportComponent } from './report/report.component';
 ////// end of material UI imports
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    SignupComponent,
+    FeedComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,
