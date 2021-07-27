@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   login() : void {
     this.dataService.login(this.email, this.password).subscribe((data: any) => {
       localStorage.setItem('auth_token', data['auth_token']);
-      this.router.navigate(['feeder']);
+      this.router.navigate(['feed']);
     }, (err: any) => {
       alert("Invalid credentials");
     })

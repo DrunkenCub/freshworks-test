@@ -14,6 +14,6 @@ export class AppComponent {
   logOut(){
     console.log("cleared");
     localStorage.clear();
-    this.router.navigate(['/feeder']);
+    this.router.navigate(['/login']);
   }
 }
