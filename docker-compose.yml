@@ -1,0 +1,25 @@
+version: "3.3"
+   
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=freshworks
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  api:
+    build: 
+      context: ./server
+    environment:
+      FLASK_APP: server/src/api.py
+      FLASK_ENV: development
+      FW_DB_CON_STRING: postgresql://postgres:postgres@db:5432/freshworks
+    volumes:
+      - ./:/usr/src/app/
+    command: flask run --host=0.0.0.0
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
