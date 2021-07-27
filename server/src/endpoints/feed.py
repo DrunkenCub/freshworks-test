@@ -14,10 +14,23 @@ class FeedAPI(MethodView):
     def post(self):
         pass
 
-    @login_required
-    @admin_required
+    # @login_required
+    # @admin_required
     def get(self, user_id=None):
-        pass
+        if user_id:
+            make_response(jsonify([f.to_dict() for f in User.get_feeding_by_user()]))
+
+        location_id = request.args.get("location_id", None)
+        food_id = request.args.get("food_id", None)
+
+        _filter = {}
+        if location_id:
+            _filter["location_id"] = location_id
+        if food_id:
+            _filter["food_id"] = food_id
+    
+        feedings = Feeding.get_feedings(**_filter)
+        return make_response(jsonify([f.to_dict() for f in feedings]))
 
     def put(self):
         pass

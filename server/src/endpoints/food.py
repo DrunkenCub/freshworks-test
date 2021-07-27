@@ -15,7 +15,7 @@ class FoodAPI(MethodView):
     def post(self):
         pass
 
-    # @login_required
+    @login_required
     def get(self):
         food_type_id = request.args.get("food_type_id", None)
 
@@ -27,7 +27,6 @@ class FoodAPI(MethodView):
 
         return make_response(jsonify([f.to_dict() for f in foods]))
 
-
     def put(self):
         pass
 
@@ -38,7 +37,7 @@ class FoodTypeAPI(MethodView):
     def post(self):
         pass
 
-    # @login_required
+    @login_required
     def get(self):
         _filter = {}
         food_types = Food.get_foods(**_filter)
