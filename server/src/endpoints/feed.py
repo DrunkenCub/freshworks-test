@@ -14,8 +14,8 @@ class FeedAPI(MethodView):
     def post(self):
         pass
 
-    # @login_required
-    # @admin_required
+    @login_required
+    @admin_required
     def get(self, user_id=None):
         if user_id:
             make_response(jsonify([f.to_dict() for f in User.get_feeding_by_user()]))
