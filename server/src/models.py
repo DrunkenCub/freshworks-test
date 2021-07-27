@@ -87,18 +87,19 @@ class Feeding(OutputMixin, db.Model):
     schedule = db.relationship("ScheduleFeed", uselist=False, backref="feeding")
 
     @staticmethod
-    def feed_ducks(location, total_ducks, total_amount, food_id, user_id, fed_date=None):
+    def feed_ducks(location_id, total_ducks, total_amount, food_id, user_id, fed_date=None):
         try:
             _feeding = Feeding(
-                location=location,
+                location_id=location_id,
                 total_ducks=total_ducks,
                 total_amount=total_amount,
                 user_id=user_id,
                 fed_date=fed_date,
-                food_id=food.id
+                food_id=food_id
             )
             db.session.add(_feeding)
             db.session.commit()
+            return _feeding
         except SQLAlchemyError as e:
             db.session.rollback()
             raise
@@ -115,7 +116,7 @@ class Location(OutputMixin, db.Model):
     __tablename__ = "location"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    city_country = db.Column(db.String(256), nullable=True)
+    city_country = db.Column(db.String(256), nullable=False, unique=True)
     feedings = db.relationship('Feeding', backref='location', lazy=True)
 
     def get_food_by_location(self):
@@ -131,10 +132,12 @@ class Location(OutputMixin, db.Model):
     def add_location(city_country):
         try:
             _location = Location(
-                city_country=typename
+                city_country=city_country
             )
             db.session.add(_location)
             db.session.commit()
+
+            return _location
         except SQLAlchemyError as e:
             db.session.rollback()
             raise
@@ -166,6 +169,8 @@ class FoodType(OutputMixin, db.Model):
             )
             db.session.add(_food_type)
             db.session.commit()
+
+            return _food_type
         except SQLAlchemyError as e:
             db.session.rollback()
             raise
@@ -195,11 +200,13 @@ class Food(OutputMixin, db.Model):
         try:
             _food = Food(
                 foodname=foodname,
-                food_type_id=food_type_id
+                food_type_id=food_type_id,
                 desc=desc
             )
             db.session.add(_food)
             db.session.commit()
+
+            return _food
         except SQLAlchemyError as e:
             db.session.rollback()
             raise

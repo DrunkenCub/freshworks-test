@@ -19,8 +19,8 @@ class FoodAPI(MethodView):
         desc = post_data.get('desc', None)
 
         food = Food.add_food(
-            typename=typename,
-            food_type_id=food_type_id
+            foodname=foodname,
+            food_type_id=food_type_id,
             desc=desc
         )
         responseObject = {

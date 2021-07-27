@@ -11,7 +11,7 @@ feed_bp = Blueprint('feed', __name__, url_prefix='/feed')
 
 class FeedAPI(MethodView):
 
-    # @login_required
+    @login_required
     def post(self):
         post_data = request.get_json()
         fed_date = post_data.get('fed_date')

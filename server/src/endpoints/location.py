@@ -14,7 +14,7 @@ class LocationAPI(MethodView):
     # @login_required
     def post(self):
         post_data = request.get_json()
-        foodname = post_data.get('city_country')
+        city_country = post_data.get('city_country')
 
         location = Location.add_location(city_country=city_country)
         
@@ -38,5 +38,5 @@ class LocationAPI(MethodView):
 
 location_view = LocationAPI.as_view('location_api')
 
-location_bp.add_url_rule('/location', view_func=location_view, methods=['POST'])
-food_bp.add_url_rule('/location', view_func=location_view, methods=['GET'])
+location_bp.add_url_rule('/', view_func=location_view, methods=['POST'])
+location_bp.add_url_rule('/', view_func=location_view, methods=['GET'])
