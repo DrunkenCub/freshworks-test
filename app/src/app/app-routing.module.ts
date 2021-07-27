@@ -8,11 +8,11 @@ import { LoginGuardGuard } from './login-guard.guard';
 
 //using https://angular.io/guide/router#preventing-unauthorized-access
 const routes: Routes = [
-  { path: '', redirectTo: 'feeder', pathMatch: 'full'},
+  { path: '', redirectTo: 'feed', pathMatch: 'full'},
   { path: 'login', component:  LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'report', component:  ReportComponent,  canActivate:[LoginGuardGuard]},
-  { path: 'feeder', component:  FeedComponent,  canActivate:[LoginGuardGuard]},
+  { path: 'feed', component:  FeedComponent,  canActivate:[LoginGuardGuard]},
 ];
 
 
