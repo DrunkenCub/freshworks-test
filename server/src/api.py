@@ -44,5 +44,9 @@ def drop_db():
 
 # Registering enpoints
 from src.endpoints.auth import auth_bp
+from src.endpoints.feed import feed_bp
+from src.endpoints.food import food_bp
 
 app.register_blueprint(auth_bp)
+app.register_blueprint(feed_bp)
+app.register_blueprint(food_bp)
