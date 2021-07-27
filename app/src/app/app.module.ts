@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 //////////// Material UI 
 import {A11yModule} from '@angular/cdk/a11y';
@@ -54,6 +55,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { FeedComponent } from './feed/feed.component';
 import { ReportComponent } from './report/report.component';
+import { HeaderInterceptor } from './http.interceptor';
 ////// end of material UI imports
 
 
@@ -113,8 +115,9 @@ import { ReportComponent } from './report/report.component';
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
