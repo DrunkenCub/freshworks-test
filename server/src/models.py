@@ -118,8 +118,26 @@ class Location(OutputMixin, db.Model):
     city_country = db.Column(db.String(256), nullable=True)
     feedings = db.relationship('Feeding', backref='location', lazy=True)
 
-    def get_food_by_type(self):
+    def get_food_by_location(self):
         return self.feedings
+
+    @staticmethod
+    def get_locations(**kwargs):
+        if kwargs is None:
+            return Location.query.all()
+        return Location.query.filter_by(**kwargs).all()
+
+    @staticmethod
+    def add_location(city_country):
+        try:
+            _location = Location(
+                city_country=typename
+            )
+            db.session.add(_location)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise
 
 
 class FoodType(OutputMixin, db.Model):
@@ -133,10 +151,24 @@ class FoodType(OutputMixin, db.Model):
     def get_food_by_type(self):
         return self.foods
 
+    @staticmethod
     def get_food_types(**kwargs):
         if kwargs is None:
             return FoodType.query.all()
         return FoodType.query.filter_by(**kwargs).all()
+
+    @staticmethod
+    def add_food_type(typename, desc=None):
+        try:
+            _food_type = FoodType(
+                typename=typename,
+                desc=desc
+            )
+            db.session.add(_food_type)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise
 
 
 class Food(OutputMixin, db.Model):
@@ -152,10 +184,25 @@ class Food(OutputMixin, db.Model):
     def get_feeding_by_food(self):
         return self.feedings
 
+    @staticmethod
     def get_foods(**kwargs):
         if kwargs is None:
             return Food.query.all()
         return Food.query.filter_by(**kwargs).all()
+
+    @staticmethod
+    def add_food(foodname, food_type_id, desc=None):
+        try:
+            _food = Food(
+                foodname=foodname,
+                food_type_id=food_type_id
+                desc=desc
+            )
+            db.session.add(_food)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise
 
 
 class ScheduleFeed(OutputMixin, db.Model):

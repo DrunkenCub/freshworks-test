@@ -10,9 +10,29 @@ feed_bp = Blueprint('feed', __name__, url_prefix='/feed')
 
 
 class FeedAPI(MethodView):
-    @login_required
+
+    # @login_required
     def post(self):
-        pass
+        post_data = request.get_json()
+        fed_date = post_data.get('fed_date')
+        location_id = post_data.get('location_id')
+        food_id = post_data.get('food_id')
+        total_amount = post_data.get('total_amount')
+        total_ducks = post_data.get('total_ducks')
+
+        feeding = Feeding.feed_ducks(
+            location_id=location_id,  
+            user_id=g.user.id, 
+            fed_date=fed_date, 
+            food_id=food_id,
+            total_amount=total_amount,
+            total_ducks=total_ducks
+        )
+        responseObject = {
+            'message': 'feeding added',
+            'feeding': feeding.to_dict()
+        }
+        return make_response(jsonify(responseObject)), 200
 
     @login_required
     @admin_required
