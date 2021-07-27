@@ -20,3 +20,16 @@ def login_required(fn):
             abort(401)
         return fn(*args, **kwargs)
     return wrapper
+
+
+def admin_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        
+        if not g.user:
+            abort(401)
+        if not g.user.admin:
+            abort(403)
+        return fn(*args, **kwargs)
+    return wrapper
