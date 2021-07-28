@@ -10,8 +10,8 @@ food_bp = Blueprint('food', __name__, url_prefix='/food')
 
 
 class FoodAPI(MethodView):
-    @admin_required
     @login_required
+    @admin_required
     def post(self):
         post_data = request.get_json()
         foodname = post_data.get('foodname')
@@ -46,8 +46,8 @@ class FoodAPI(MethodView):
 
 
 class FoodTypeAPI(MethodView):
-    @admin_required
     @login_required
+    @admin_required
     def post(self):
         post_data = request.get_json()
         typename = post_data.get('typename')

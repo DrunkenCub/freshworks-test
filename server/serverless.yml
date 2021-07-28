@@ -1,0 +1,27 @@
+# serverless.yml
+service: serverless-freshworks
+# These are the plugins you have installed to support WSGI and pip 
+# requirements
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+custom:
+  wsgi:
+    # This is the file name and the app name of the application 
+    # Where file name is app.py and Flask app name is app
+    # ie. app = Flask(__name__) 
+    app: src.api.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: non-linux
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: us-east-1
+functions:
+  app:
+    handler: wsgi.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
