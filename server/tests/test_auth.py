@@ -45,7 +45,8 @@ class TestAuthBlueprint(BaseTestCase):
     def test_login(self):
         """ Test for user login """
         with self.client:
-            response = login_user(self, 'test@test.com', '123456')
+            register_user(self, 'test@user.com', '123456', "test user")
+            response = login_user(self, 'test@user.com', '123456')
             data = json.loads(response.data.decode())
             print(data)
             self.assertEqual(response.status_code, 200)
@@ -60,4 +61,5 @@ class TestFeedBlueprint():
     pass
 
 if __name__ == '__main__':
+    db.drop_all()
     unittest.main()

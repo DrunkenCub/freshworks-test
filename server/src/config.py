@@ -8,16 +8,17 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     LAMBDA_ARN = 'arn:aws:lambda:us-east-1:068963532072:function:tests'
     LAMBDA_ID = '068963532072'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:////tmp/test.db')
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     BCRYPT_LOG_ROUNDS = 4
-    SQLALCHEMY_DATABASE_URI = os.environ.get('FW_DB_CON_STRING', 'sqlite:////tmp/test.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:////tmp/test.db')
 
 
 class TestingConfig(BaseConfig):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:////tmp/test.db')
     
 
 class ProductionConfig(BaseConfig):
