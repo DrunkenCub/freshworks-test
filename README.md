@@ -14,6 +14,7 @@ Run following after editing the AWS keys in docker-compose.yml in the root.
 
 navigate to ./server and run following
 
+`` export FRESH_SETTINGS=src.config.TestingConfig `` 
 `` nosetests ``
 
 
