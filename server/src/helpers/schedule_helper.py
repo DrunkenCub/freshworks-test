@@ -36,7 +36,7 @@ def create_schedule(hour, event_guid, payload):
                                 State='ENABLED')
 
     rslt = lambda_clnt.add_permission(FunctionName=os.environ.get('LAMBDA_ARN'),
-                                  StatementId=str(permission_id),
+                                  StatementId=str(random.randint(0, 100000000)),
                                   Action='lambda:InvokeFunction',
                                   Principal='events.amazonaws.com',
                                   SourceArn=rslt['RuleArn'])
