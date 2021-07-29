@@ -8,8 +8,8 @@ export class DataService {
 
     // Due to time restrictions I have only used one service class. Ideally for each domain there should be one service
 
-  private REST_API_SERVER = "http://localhost:5000";
-  // private REST_API_SERVER = "https://tgcjthhjeb.execute-api.us-east-1.amazonaws.com/dev"
+  // private REST_API_SERVER = "http://localhost:5000";
+  private REST_API_SERVER = "https://tgcjthhjeb.execute-api.us-east-1.amazonaws.com/dev"
 
   constructor(private httpClient: HttpClient) { }
 
