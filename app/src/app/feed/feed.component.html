@@ -45,7 +45,7 @@
                     <td>
                         <mat-form-field appearance="fill">
                             <mat-label>Choose a date</mat-label>
-                                <input matInput type="datetime-local" placeholder="start date">
+                                <input matInput [(ngModel)]="date" name="date" type="datetime-local" placeholder="start date">
                           </mat-form-field>
 
                     </td>
@@ -64,6 +64,11 @@
                         </mat-form-field>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <mat-checkbox class="example-margin" [(ngModel)]="is_schedule" name="is_schedule">Is Schedule</mat-checkbox>
+                    </td>
+                  </tr>
             </table>
         </form>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>

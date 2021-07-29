@@ -9,7 +9,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select, func
 from src.api import db, bcrypt
-from src.config import *
+from src.config import BaseConfig
 
 from src.mixins.db_mixin import OutputMixin
 
@@ -30,7 +30,7 @@ class User(OutputMixin, db.Model):
         if not email:
             raise AssertionError('Email address is required')
 
-        if not re.match(EMAIL_REGEX, email):
+        if not re.match(BaseConfig.EMAIL_REGEX, email):
             raise AssertionError('Email provided is not valid.')
         return email
 
@@ -49,7 +49,7 @@ class User(OutputMixin, db.Model):
             }
             return jwt.encode(
                 payload,
-                SECRET_KEY,
+                BaseConfig.SECRET_KEY,
                 algorithm='HS256'
             )
         except Exception as e:
@@ -58,7 +58,7 @@ class User(OutputMixin, db.Model):
     @staticmethod
     def decode_auth_token(auth_token):
         try:
-            payload = jwt.decode(auth_token, SECRET_KEY)
+            payload = jwt.decode(auth_token, BaseConfig.SECRET_KEY)
             return payload['sub']
         except jwt.ExpiredSignatureError:
             raise ('Signature expired. Please log in again.')
@@ -220,3 +220,20 @@ class ScheduleFeed(OutputMixin, db.Model):
     feeding_id = db.Column(db.Integer, db.ForeignKey('feeding.id'))
     # Schdule in hourly setting
     schedule = db.Column(db.Integer, default=24)
+
+    @staticmethod
+    def create_schedule(feeding_id, schedule, user_id=None):
+        try:
+            schedule = ScheduleFeed(
+                feeding_id = feeding_id,
+                schedule = schedule
+            )
+            db.session.add(schedule)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise
+    
+    @staticmethod
+    def get_schedule_by_id(schedule_id):
+        return ScheduleFeed.query.filter_by(id=schedule_id).first()

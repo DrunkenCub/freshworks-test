@@ -1,8 +1,8 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
-from src.config import DB_CON_STRING
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -16,17 +16,18 @@ sentry_sdk.init(
     traces_sample_rate=1.0
 )
 
+
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_CON_STRING
+app_settings = os.environ.get('FRESH_SETTINGS')
 
-# according to https://github.com/pallets/flask-sqlalchemy/issues/365 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(app_settings)
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 CORS(app)
+
 
 @app.cli.command('create-db')
 def create_db():

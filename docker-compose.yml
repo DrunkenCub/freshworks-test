@@ -15,7 +15,12 @@ services:
     environment:
       FLASK_APP: server/src/api.py
       FLASK_ENV: development
+      FRESH_SETTINGS: src.config.DevelopmentConfig
       FW_DB_CON_STRING: postgresql://postgres:postgres@db:5432/freshworks
+      LAMBDA_ARN: arn:aws:lambda:us-east-1:068963532072:function:tests
+      LAMBDA_ID: 068963532072
+      AWS_ACCESS_KEY: <AWSKEY>
+      AWS_SECRET_KEY: <AWSSECRET>
     volumes:
       - ./:/usr/src/app/
     command: flask run --host=0.0.0.0
@@ -23,11 +28,9 @@ services:
       - 5000:5000
     depends_on:
       - db
- web:
-   build: 
-     context: ./app
-   ports:
-       - "4200:80"
-
-
+  # web:
+  #  build: 
+  #    context: ./app
+  #  ports:
+  #      - "4200:80"
 

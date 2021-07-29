@@ -19,6 +19,9 @@ provider:
   runtime: python3.6
   stage: dev
   region: us-east-1
+  environment:
+    FLASK_ENV: production
+    FRESH_SETTINGS: src.config.ProductionConfig
 functions:
   app:
     handler: wsgi.handler

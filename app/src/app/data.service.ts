@@ -8,8 +8,8 @@ export class DataService {
 
     // Due to time restrictions I have only used one service class. Ideally for each domain there should be one service
 
-  // private REST_API_SERVER = "http://localhost:5000";
-  private REST_API_SERVER = "https://tgcjthhjeb.execute-api.us-east-1.amazonaws.com/dev"
+  private REST_API_SERVER = "http://localhost:5000";
+  // private REST_API_SERVER = "https://tgcjthhjeb.execute-api.us-east-1.amazonaws.com/dev"
 
   constructor(private httpClient: HttpClient) { }
 
@@ -56,5 +56,16 @@ export class DataService {
       "total_ducks": total_ducks
     }
     return this.httpClient.post(this.REST_API_SERVER + "/feed/feed", feed);
+  }
+
+  public schedule(fed_date: string, location_id: number, food_id: number, total_amount:number, total_ducks:number){
+    const feed = {
+      "fed_date": fed_date,
+      "location_id": location_id,
+      "food_id": food_id,
+      "total_amount": total_amount,
+      "total_ducks": total_ducks
+    }
+    return this.httpClient.post(this.REST_API_SERVER + "/feed/schedule", feed);
   }
 }
