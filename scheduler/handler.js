@@ -3,7 +3,6 @@ const axios = require('axios');
 
 module.exports.hello = async (event) => {
 
-  let auth_token;
   console.info(process.env.API);
   console.info(process.env.EMAIL);
   console.info(process.env.PASSWORD);
